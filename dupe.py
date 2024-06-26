@@ -1,19 +1,9 @@
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
 import random
-from dotenv import load_dotenv
-import os
+import utils
 
-load_dotenv()
-spotifyID = os.getenv('SPOTIFY_CLIENT_ID')
-spotifySecret = os.getenv('SPOTIFY_CLIENT_SECRET')
+scope = 'user-library-read playlist-modify-public'
 
-scope = 'user-library-read playlist-modify-public playlist-read-private'
-
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=spotifyID,
-                                               client_secret=spotifySecret,
-                                               redirect_uri="http://localhost:1234",
-                                               scope=scope))
+sp = utils.spotipySetup(scope)
 
 playlist_ids = [
     ["5Lh62TlIAUHgaFYo6IE2cZ", "1ciFrlllVeEBETOkvFn4qN"],  # bangers

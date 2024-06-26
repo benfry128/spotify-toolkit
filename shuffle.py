@@ -1,43 +1,17 @@
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
 import random
-import requests
 import time
-from dotenv import load_dotenv
-import os
+import utils
 
-load_dotenv()
-lastFMApiKey = os.getenv('LAST_FM_API_KEY')
-spotifyID = os.getenv('SPOTIFY_CLIENT_ID')
-spotifySecret = os.getenv('SPOTIFY_CLIENT_SECRET')
-
-
-def printDict(d):
-    for key in d.keys():
-        print(f'{key}: {d[key]}')
-
+sp = utils.spotipySetup('playlist-modify-private playlist-modify-public playlist-read-private')
 
 startTime = int((time.time()-14400) / 86400) * 86400 - 72000
-
 endTime = startTime + 86400
 
-r = requests.get(f"https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=benfry128&api_key={lastFMApiKey}&format=json&from={startTime}&to={endTime}&limit=200")
+recents = utils.getRecentTracks(startTime, endTime)
 
-recents = r.json()['recenttracks']['track']
-
-recentNameArtists = []
 recentDict = {}
 for recent in recents:
-    # recentNameArtists.append(f'{recent['name']} {recent['artist']['#text']}')
     recentDict[f'{recent['name']} {recent['artist']['#text']}'.lower()] = True
-    # print(f'{recent['name']} {recent['artist']['#text']}')
-    
-scope = 'user-library-read playlist-modify-public playlist-read-private'
-
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=spotifyID,
-                                               client_secret=spotifySecret,
-                                               redirect_uri="http://localhost:1234",
-                                               scope=scope))
 
 playlist_ids = [
     ["5Lh62TlIAUHgaFYo6IE2cZ", "1ciFrlllVeEBETOkvFn4qN"],  # bangers
