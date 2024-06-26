@@ -1,7 +1,7 @@
 import random
 import utils
 
-scope = 'user-library-read playlist-modify-public'
+scope = 'playlist-modify-public'
 
 sp = utils.spotipySetup(scope)
 
