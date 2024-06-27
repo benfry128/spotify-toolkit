@@ -27,15 +27,9 @@ for playlist_pair in playlist_ids:
     new_id = playlist_pair[1]
 
     playlist = sp.playlist(new_id)
-    total_tracks = playlist['tracks']['total']
     print(playlist['name'])
 
-    offset = 0
-    tracks = []
-    while offset < total_tracks:
-        print(f"Getting tracks {offset}-{offset+99}")
-        tracks.extend(sp.playlist_tracks(new_id, offset=offset)['items'])
-        offset += 100
+    tracks = utils.getAllTracks(new_id, sp)
     print(len(tracks))
 
     back_of_list = []

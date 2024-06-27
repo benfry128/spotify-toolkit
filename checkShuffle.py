@@ -5,6 +5,8 @@ sp = utils.spotipySetup('playlist-read-private playlist-read-collaborative user-
 
 days = int(input("How many days back would you like to go? "))
 
+my_id = '31tnaej2hznzuj25tx2p2lf7p4xy'
+
 recents = []
 
 currently_playing = sp.current_playback()['is_playing']
@@ -33,12 +35,9 @@ for recent in recents:
 #     else:
 #         print(f'Listened to {splitKey[0]} by {splitKey[1]} {recentDict[key]} time{"" if recentDict[key] == 1 else "s"}.')
 
-playlists = sp.current_user_playlists()
-offset = 50
-while offset < playlists['total']:
-    playlists.extend(sp.current_user_playlists(offset=offset))
+playlists = utils.getAllPlaylists(my_id, sp)
 
-for playlist in playlists['items']:
+for playlist in playlists:
     print("~" * 200)
     print("~" * 200)
     name = playlist['name']
@@ -53,14 +52,7 @@ for playlist in playlists['items']:
     elif analyze == 'n':
         continue
 
-    total_tracks = sp.playlist_items(uri)['total']
-
-    offset = 0
-    tracks = []
-    while offset < total_tracks:
-        print(f"Getting tracks {offset}-{offset+99} from {name}")
-        tracks.extend(sp.playlist_tracks(uri, offset=offset)['items'])
-        offset += 100
+    tracks = utils.getAllTracks(uri, sp)
 
     print(f"Analyzing {len(tracks)} tracks from playlist{name}")
 
